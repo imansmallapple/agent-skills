@@ -1,19 +1,20 @@
 {
-  "name": "harmonyos-dev-skill",
+  "name": "agent-skills",
   "version": "1.0.0",
-  "description": "Initialize HarmonyOS project templates (Standard ArkTS or Native C++) and perform initial build verification.",
+  "description": "A collection of professional AI agent skills for HarmonyOS development, project orchestration, and more.",
   "keywords": [
     "harmonyos",
     "arkts",
+    "conductor",
     "agent-skills",
     "ai-skills",
     "gemini-skills",
     "claude-skills",
-    "scaffolding"
+    "workflow"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/imansmallapple/Harmonyos-dev-skill.git"
+    "url": "https://github.com/imansmallapple/agent-skills.git"
   },
   "author": "imansmallapple",
   "license": "MIT"
