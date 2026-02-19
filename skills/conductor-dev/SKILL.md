@@ -1,13 +1,13 @@
 ---
 name: conductor-dev
-description: Initialize the Conductor directory for project orchestration. Use when starting a new project or adding Conductor-based workflow management to an existing repository.
+description: Professional project orchestration and workflow management. Initialize the Conductor directory to manage tracks, specifications, and implementation plans.
 ---
 
-# Conductor Dev
+# Conductor Dev Pro
 
 ## Overview
 
-This skill provides the boilerplate files and structure for the Conductor project orchestration framework. It initializes a `conductor/` directory with essential documentation and workflow definitions according to the Universal File Resolution Protocol.
+This skill provides the boilerplate files and structure for the Conductor project orchestration framework. It initializes a `conductor/` directory with essential documentation and workflow definitions according to the Universal File Resolution Protocol. It supports both standard linear workflows and advanced cycle-based development (V4 Supercharged).
 
 ## Workflow
 
@@ -16,22 +16,38 @@ Scaffolds the `conductor/` directory in the current project.
 - **Trigger:** "Initialize conductor", "Setup conductor template", "Add conductor to project"
 - **Action:**
   1. Create a `conductor/` directory at the project root if it doesn't exist.
-  2. Copy all template files from `assets/conductor-template/` to the `conductor/` directory using PowerShell-compatible commands.
-  3. Inform the user that the Conductor directory has been initialized.
+  2. Create an `artifacts/snapshots/` directory at the project root if it doesn't exist.
+  3. Create an `artifacts/logs/` directory at the project root if it doesn't exist.
+  4. Copy all template files from `assets/conductor-template/` to the `conductor/` directory using PowerShell-compatible commands.
+  5. Inform the user that the Conductor directory and artifacts folder have been initialized.
+
+### 2. Cycle Workflow (V4 Supercharged)
+Executes a structured task cycle defined in `conductor/workflows/cycle.md`.
+- **Key Files:** `TASKS.md`, `SESSION_STATE.json` (runtime), `artifacts/logs/`
+- **Steps:** Initialization -> Analysis -> Execution -> Self-Review -> Synchronization -> Handover.
 
 ## Implementation Directives
+
 When implementing tracks or tasks under Conductor:
+
 1. **Dynamic Path Resolution:** ALWAYS resolve template paths relative to the skill's root directory.
 2. **Lint Before Commit:** Execute `codelinter` on all modified files immediately after editing.
-3. **Token Efficiency (CRITICAL):** Do NOT run unit tests (`hvigorw test`) or full project build commands (like `assembleHap`) during the task implementation phase, **even if the track plan or project workflow suggests it**. This is a strict constraint to save time and tokens. Task-level verification should rely primarily on `codelinter` and manual/visual verification.
-4. **Visual Proof:** For UI tasks, save a screenshot to `conductor/artifacts/snapshots/[task_id].png`.
+3. **Task Verification:** 
+    - For logic changes, rely primarily on `codelinter` to save tokens.
+    - **UI Validation (MANDATORY):** For any UI modification, you MUST:
+        1. Ensure a device/emulator is connected via `hdc list targets`.
+        2. Ensure the `artifacts/snapshots/` directory exists.
+        3. Execute `hdc shell snapshot_display /data/local/tmp/snapshot.png` to capture the screen.
+        4. Pull the screenshot using `hdc file recv /data/local/tmp/snapshot.png "artifacts/snapshots/[task_id].png"`.
+        5. (Optional but recommended) If the track specifies automated tests, run them (e.g., `hvigorw test`) and capture the final state or results as an additional snapshot.
+4. **Visual Proof:** Save all UI validation snapshots to `artifacts/snapshots/[task_id].png` or `artifacts/snapshots/[task_id]_test.png`.
 5. **Idempotent Edits:** Before using the `replace` tool, you MUST use `read_file` to verify the current content. Ensure that `new_string` is DIFFERENT from the existing text to avoid "No changes to apply" errors.
 6. **Automated Self-Learning Loop:** 
     - At the start of every track implementation or task, you MUST read `conductor/learning.md`. If it does not exist, create it with a `# Learning Log` header.
     - If an error happens, analyze and document the fix in `conductor/learning.md`.
     - **Display Lessons:** Proactively notify the user and explicitly display the content of "Lessons Learned" in the chat whenever `conductor/learning.md` is updated or after resolving errors or complex tasks.
 7. **Flexible Checkpointing:** Commit changes after every task by default, but allow "Phase-based" commits if requested in the track plan.
-8. **Quality Standards:** Adhere strictly to the project's `product-guidelines.md` and prioritize UI performance.
+8. **Quality Standards:** Adhere strictly to the project's `product-guidelines.md` and prioritize UI performance ("Premium Design" and "Robustness").
 9. **HarmonyOS Context:** Read `build-profile.json5` for SDK versions and cross-reference with API mapping.
 10. **Final Build Verification:** ONLY after all phases in a track's `plan.md` are completed, you MUST execute `hvigorw assembleHap` as a final verification step to ensure the entire project is in a stable, buildable state before completing the track. Do not execute this command after individual tasks or phases.
 
@@ -54,8 +70,9 @@ Contains the template files for the Conductor directory structure:
 - `workflow.md`: Development workflow and lifecycle.
 - `tracks.md`: Registry for development tracks.
 - `product-guidelines.md`: Design and implementation guidelines.
-- `code_styleguides/`: Directory for language-specific style guides.
-- `workflows/`: Detailed workflow patterns (e.g., cycle-based).
+- `setup_state.json`: Initial state configuration for setup tracking.
+- `code_styleguides/`: Directory for language-specific style guides (e.g., `arkts.md`).
+- `workflows/`: Detailed workflow patterns (e.g., `cycle.md` for V4 Supercharged cycle).
 
 ## Reference: HarmonyOS Version to API Level Mapping
 
