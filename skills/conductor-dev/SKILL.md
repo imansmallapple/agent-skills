@@ -3,7 +3,7 @@ name: conductor-dev
 description: Professional project orchestration and workflow management. Initialize the Conductor directory to manage tracks, specifications, and implementation plans.
 ---
 
-# Conductor Dev Pro
+# Conductor Dev
 
 ## Overview
 
